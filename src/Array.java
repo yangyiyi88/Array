@@ -1,5 +1,7 @@
-public class Array {
-    private int[] data;
+import java.lang.Object;
+
+public class Array<E> {
+    private E[] data;
     private int size;
 
     /**
@@ -8,7 +10,7 @@ public class Array {
      * @param capacity
      */
     public Array(int capacity) {
-        this.data = new int[capacity];
+        this.data = (E[]) new Object[capacity];
         this.size = 0;
     }
 
@@ -47,11 +49,32 @@ public class Array {
     }
 
     /**
+     * 在第index个位置插入一个新元素e
+     *
+     * @param index
+     * @param e
+     */
+    public void add(int index, E e) {
+        if (index < 0 || index > size) {
+            throw new IllegalArgumentException("Add failed. Require index >= 0 and index <= size.");
+        }
+        if (size == data.length) {
+//            throw new IllegalArgumentException("Add failed. Array is full.");
+            resize(2 * data.length);
+        }
+        for (int i = size - 1; i >= index; i--) {
+            data[i + 1] = data[i];
+        }
+        data[index] = e;
+        size++;
+    }
+
+    /**
      * 在所有元素后添加一个新元素
      *
      * @param e
      */
-    public void addLast(int e) {
+    public void addLast(E e) {
        /* if (size == data.length) {
             throw new IllegalArgumentException("AddLast failed. Array is full.");
         }
@@ -65,28 +88,8 @@ public class Array {
      *
      * @param e
      */
-    public void addFirst(int e) {
+    public void addFirst(E e) {
         add(0, e);
-    }
-
-    /**
-     * 在第index个位置插入一个新元素e
-     *
-     * @param index
-     * @param e
-     */
-    public void add(int index, int e) {
-        if (size == data.length) {
-            throw new IllegalArgumentException("Add failed. Array is full.");
-        }
-        if (index < 0 || index > size) {
-            throw new IllegalArgumentException("Add failed. Require index >= 0 and index <= size.");
-        }
-        for (int i = size - 1; i >= index; i--) {
-            data[i + 1] = data[i];
-        }
-        data[index] = e;
-        size++;
     }
 
     /**
@@ -95,7 +98,7 @@ public class Array {
      * @param index
      * @return
      */
-    public int get(int index) {
+    public E get(int index) {
         //通过封装，使用户无法访问无数据的存储空间
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("Get failed. Index is illegal.");
@@ -109,7 +112,7 @@ public class Array {
      * @param index
      * @param e
      */
-    public void set(int index, int e) {
+    public void set(int index, E e) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("Set failed. Index is illegal.");
         }
@@ -122,9 +125,9 @@ public class Array {
      * @param e
      * @return
      */
-    public boolean contains(int e) {
+    public boolean contains(E e) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == e) {
+            if (data[i].equals(e)) {
                 return true;
             }
         }
@@ -137,9 +140,9 @@ public class Array {
      * @param e
      * @return
      */
-    public int find(int e) {
+    public int find(E e) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == e) {
+            if (data[i].equals(e)) {
                 return i;
             }
         }
@@ -152,29 +155,33 @@ public class Array {
      * @param index
      * @return
      */
-    public int remove(int index) {
+    public E remove(int index) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("Remove failed. Index is illegal.");
         }
-        int ret = data[index];
+        E ret = data[index];
         for (int i = index + 1; i < size; i++) {
             data[i - 1] = data[i];
         }
         size--;
+        data[size] = null; // loitering objects != memory leak
+        if (size == data.length / 4 && data.length / 2 != 0) {
+            resize(data.length / 2);
+        }
         return ret;
     }
 
     /**
      * 从数组中删除第一个元素，返回删除的元素
      */
-    public int removeFist() {
+    public E removeFist() {
         return remove(0);
     }
 
     /**
      * 从数组中删除最后一个元素，返回删除的元素
      */
-    public int removeLast() {
+    public E removeLast() {
         return remove(size - 1);
     }
 
@@ -183,7 +190,7 @@ public class Array {
      *
      * @param e
      */
-    public void removeElement(int e) {
+    public void removeElement(E e) {
         int index = find(e);
         if (index != -1)
             remove(index);
@@ -202,5 +209,18 @@ public class Array {
         }
         res.append("]");
         return res.toString();
+    }
+
+    /**
+     * 动态容量变化逻辑实现
+     *
+     * @param newCapacity
+     */
+    private void resize(int newCapacity) {
+        E[] newData = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        data = newData;
     }
 }
