@@ -1,3 +1,5 @@
+package com.imooc.array;
+
 import java.lang.Object;
 
 public class Array<E> {
@@ -59,7 +61,7 @@ public class Array<E> {
             throw new IllegalArgumentException("Add failed. Require index >= 0 and index <= size.");
         }
         if (size == data.length) {
-//            throw new IllegalArgumentException("Add failed. Array is full.");
+//            throw new IllegalArgumentException("Add failed. com.imooc.array.Array is full.");
             resize(2 * data.length);
         }
         for (int i = size - 1; i >= index; i--) {
@@ -76,7 +78,7 @@ public class Array<E> {
      */
     public void addLast(E e) {
        /* if (size == data.length) {
-            throw new IllegalArgumentException("AddLast failed. Array is full.");
+            throw new IllegalArgumentException("AddLast failed. com.imooc.array.Array is full.");
         }
         data[size] = e;
         size++;*/
@@ -104,6 +106,24 @@ public class Array<E> {
             throw new IllegalArgumentException("Get failed. Index is illegal.");
         }
         return data[index];
+    }
+
+    /**
+     * 获取数组第一个元素
+     *
+     * @return
+     */
+    public E getFirst() {
+        return get(0);
+    }
+
+    /**
+     * 获取数组最后一个元素
+     *
+     * @return
+     */
+    public E getLast() {
+        return get(size - 1);
     }
 
     /**
@@ -199,7 +219,7 @@ public class Array<E> {
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
-        res.append(String.format("Array: size = %d , capacity = %d\n", size, data.length));
+        res.append(String.format("com.imooc.array.Array: size = %d , capacity = %d\n", size, data.length));
         res.append("[");
         for (int i = 0; i < size; i++) {
             res.append(data[i]);

@@ -1,3 +1,5 @@
+package com.imooc.array;
+
 public class Student {
     private String name;
     private int score;
@@ -9,7 +11,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return String.format("Student(name: %s, score: %d)", name, score);
+        return String.format("com.imooc.array.Student(name: %s, score: %d)", name, score);
     }
 
     public static void main(String[] args) {

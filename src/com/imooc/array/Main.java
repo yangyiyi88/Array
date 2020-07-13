@@ -1,3 +1,7 @@
+package com.imooc.array;
+
+import com.imooc.array.Array;
+
 public class Main {
     public static void main(String[] args) {
         Array<Integer> arr = new Array<>();
@@ -20,5 +24,13 @@ public class Main {
 
         arr.removeFist();
         System.out.println(arr);
+
+        /*com.imooc.stack.ArrayStack<Integer> stack = new com.imooc.stack.ArrayStack<>();
+        for (int i = 0; i < 5; i++) {
+            stack.push(i);
+            System.out.println(stack);
+        }
+        stack.pop();
+        System.out.println(stack);*/
     }
 }
